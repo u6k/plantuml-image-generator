@@ -46,7 +46,7 @@ $ ./gradlew bootRun
 
 ### CircleCI CLIでビルド確認
 
-- Using the CircleCI Command Line Interface (CLI) - CircleCI https://circleci.com/docs/2.0/local-jobs/
+- [Using the CircleCI Command Line Interface (CLI) - CircleCI](https://circleci.com/docs/2.0/local-jobs/)
 
 CircleCI CLIをインストールして、以下を実行します。
 
