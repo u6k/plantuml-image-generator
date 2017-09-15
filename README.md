@@ -28,6 +28,22 @@ TODO
 
 TODO
 
+## Development
+
+### 開発環境を構築
+
+Eclipseプロジェクトを作成します。
+
+```
+$ ./gradlew eclipse
+```
+
+実行します。
+
+```
+$ ./gradlew bootRun
+```
+
 ## Author
 
 - [u6k - GitHub](https://github.com/u6k)
