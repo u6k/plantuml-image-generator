@@ -1,0 +1,37 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE")
+    }
+}
+
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "org.springframework.boot"
+
+version = "0.1.0"
+
+jar {
+    baseName = "plantuml-image-generator"
+}
+
+eclipse {
+    classpath {
+        defaultOutputDir = file("build/eclipse-classes")
+    }
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
