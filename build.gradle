@@ -34,5 +34,6 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("net.sourceforge.plantuml:plantuml:8059")
+    compile("org.apache.httpcomponents:httpclient:4.5.3")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
