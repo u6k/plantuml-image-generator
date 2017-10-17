@@ -1,6 +1,6 @@
 # plantuml-image-generator
 
-[![CircleCI](https://img.shields.io/circleci/project/github/u6k/plantuml-image-generator.svg)](https://circleci.com/gh/u6k/plantuml-image-generator) [![GitHub release](https://img.shields.io/github/release/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/releases) [![license](https://img.shields.io/github/license/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE) [![Docker Stars](https://img.shields.io/docker/stars/u6kapps/plantuml-image-generator.svg)](https://hub.docker.com/r/u6kapps/plantuml-image-generator/) [![project-reports](https://img.shields.io/badge/site-project--reports-orange.svg)](https://u6k.github.io/plantuml-image-generator/project-reports.html)
+[![Travis](https://img.shields.io/travis/u6k/plantuml-image-generator.svg)](https://travis-ci.org/u6k/plantuml-image-generator) [![GitHub release](https://img.shields.io/github/release/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/releases) [![license](https://img.shields.io/github/license/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE) [![Docker Stars](https://img.shields.io/docker/stars/u6kapps/plantuml-image-generator.svg)](https://hub.docker.com/r/u6kapps/plantuml-image-generator/) [![project-reports](https://img.shields.io/badge/site-project--reports-orange.svg)](https://u6k.github.io/plantuml-image-generator/project-reports.html)
 
 PlantUML文書を渡すと画像を返すAPI
 
@@ -42,16 +42,6 @@ $ ./gradlew eclipse
 
 ```
 $ ./gradlew bootRun
-```
-
-### CircleCI CLIでビルド確認
-
-- [Using the CircleCI Command Line Interface (CLI) - CircleCI](https://circleci.com/docs/2.0/local-jobs/)
-
-CircleCI CLIをインストールして、以下を実行します。
-
-```
-$ circleci build
 ```
 
 ## Author
