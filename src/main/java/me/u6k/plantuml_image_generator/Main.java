@@ -41,7 +41,7 @@ public class Main {
         }
 
         url = URLDecoder.decode(url, "UTF-8");
-        L.debug("url decoded: url={}" + url);
+        L.debug("url decoded: url={}", url);
 
         String umlText;
 
