@@ -1,5 +1,5 @@
 
-package me.u6k.plantuml_image_generator;
+package me.u6k.plantuml_image_generator.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,11 +8,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MainTest {
+public class WebRepositoryImplTest {
 
     @Test
-    public void pass() {
-        // TODO: 後で削除します
+    public void fail() {
+        throw new UnsupportedOperationException();
     }
 
 }
