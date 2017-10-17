@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class Application {
+public class Main {
 
-    private static final Logger L = LoggerFactory.getLogger(Application.class);
+    private static final Logger L = LoggerFactory.getLogger(Main.class);
 
     @Value("${info.app.version}")
     private String appVersion;
@@ -87,7 +87,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(Main.class, args);
     }
 
 }
