@@ -11,6 +11,8 @@ before_install:
     - sudo apt-get -y install docker-ce
 
 script:
+    - docker build -t plantuml-image-generator-dev -f Dockerfile-dev .
+    - docker run --rm -v ${HOME}/.m2:/root/.m2 -v ${PWD}:/var/plantuml-image-generator plantuml-image-generator-dev ./mvnw clean site
     - docker build -t u6kapps/plantuml-image-generator .
 
 after_success:
