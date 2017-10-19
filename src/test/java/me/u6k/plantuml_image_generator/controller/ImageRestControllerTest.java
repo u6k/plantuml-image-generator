@@ -35,12 +35,15 @@ public class ImageRestControllerTest {
     public void generate_image() throws Exception {
         String url = "http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000";
 
+        // モックを設定
         String expectedUmlPath = "/service/PlantUmlServiceTest/simple_uml.png";
         byte[] expectedUmlData = IOUtils.toByteArray(this.getClass().getResourceAsStream(expectedUmlPath));
         given(this.service.generate(url)).willReturn(expectedUmlData);
 
+        // テストを実行
         ResultActions result = this.mvc.perform(get("/image.png").param("url", url));
 
+        // テスト結果を確認
         result.andExpect(status().isOk())
             .andExpect(header().string("X-Api-Version", this.appVersion))
             .andExpect(header().string("Content-Type", "image/png"))
@@ -49,11 +52,14 @@ public class ImageRestControllerTest {
 
     @Test
     public void service_throw_illegalArgumentException() throws Exception {
+        // モックを設定
         given(this.service.generate(""))
             .willThrow(new IllegalArgumentException("url is blank."));
 
+        // テストを実行
         ResultActions result = this.mvc.perform(get("/image.png").param("url", ""));
 
+        // テスト結果を確認
         result.andExpect(status().isBadRequest())
             .andExpect(header().string("X-Api-Version", this.appVersion))
             .andExpect(header().string("Content-Type", "application/json"))
@@ -64,11 +70,14 @@ public class ImageRestControllerTest {
     public void service_throw_readWebResourceException() throws Exception {
         String url = "http://httpbin.org/delay/20";
 
+        // モックを設定
         given(this.service.generate(url))
             .willThrow(new ReadWebResourceException("timeout")); // FIXME
 
+        // テストを実行
         ResultActions result = this.mvc.perform(get("/image.png").param("url", url));
 
+        // テスト結果を確認
         result.andExpect(status().isInternalServerError())
             .andExpect(header().string("X-Api-Version", this.appVersion))
             .andExpect(header().string("Content-Type", "application/json"))

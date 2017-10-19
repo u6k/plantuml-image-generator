@@ -32,9 +32,11 @@ public class WebRepositoryImplTest {
 
     @Test
     public void get_ok() throws IOException {
+        // テストを実行
         String url = "https://gist.githubusercontent.com/u6k/bd978c6af1d040d06aca8820fc178fe1/raw/42862b4b373e7a67c0a3ca11b9b8dd59fc83c000/criminal_jc.plantuml";
         String actualData = this.webRepo.getUrl(url);
 
+        // テスト結果を確認
         String path = "/model/WebRepositoryImplTest/criminal_jc.plantuml";
         String expectedData = IOUtils.toString(this.getClass().getResourceAsStream(path), "UTF-8");
 
@@ -43,9 +45,11 @@ public class WebRepositoryImplTest {
 
     @Test
     public void get_redirect() throws IOException {
+        // テストを実行
         String url = "https://goo.gl/UoQLcf";
         String actualData = this.webRepo.getUrl(url);
 
+        // テスト結果を確認
         String path = "/model/WebRepositoryImplTest/criminal_jc.plantuml";
         String expectedData = IOUtils.toString(this.getClass().getResourceAsStream(path), "UTF-8");
 
@@ -56,6 +60,7 @@ public class WebRepositoryImplTest {
     public void get_not_found() {
         String url = "https://gist.github.com/u6k/aaa/bbb";
 
+        // テストを実行(テスト結果として例外を期待)
         this.thrown.expect(ReadWebResourceException.class);
         this.thrown.expectMessage("url=https://gist.github.com/u6k/aaa/bbb, statusCode=404");
         this.webRepo.getUrl(url);
@@ -65,6 +70,7 @@ public class WebRepositoryImplTest {
     public void get_internal_server_error() {
         String url = "http://ozuma.sakura.ne.jp/httpstatus/500";
 
+        // テストを実行(テスト結果として例外を期待)
         this.thrown.expect(ReadWebResourceException.class);
         this.thrown.expectMessage("url=http://ozuma.sakura.ne.jp/httpstatus/500, statusCode=500");
         this.webRepo.getUrl(url);
@@ -72,6 +78,7 @@ public class WebRepositoryImplTest {
 
     @Test
     public void get_url_blank_1() {
+        // テストを実行(テスト結果として例外を期待)
         this.thrown.expect(IllegalArgumentException.class);
         this.thrown.expectMessage("url is blank.");
         this.webRepo.getUrl(null);
@@ -79,6 +86,7 @@ public class WebRepositoryImplTest {
 
     @Test
     public void get_url_blank_2() {
+        // テストを実行(テスト結果として例外を期待)
         this.thrown.expect(IllegalArgumentException.class);
         this.thrown.expectMessage("url is blank.");
         this.webRepo.getUrl("");
@@ -86,6 +94,7 @@ public class WebRepositoryImplTest {
 
     @Test
     public void get_url_blank_3() {
+        // テストを実行(テスト結果として例外を期待)
         this.thrown.expect(IllegalArgumentException.class);
         this.thrown.expectMessage("url is blank.");
         this.webRepo.getUrl(" ");
@@ -95,6 +104,7 @@ public class WebRepositoryImplTest {
     public void get_invalid_url() {
         String url = "aaa:bbb:ccc:ddd:eee";
 
+        // テストを実行(テスト結果として例外を期待)
         this.thrown.expect(ReadWebResourceException.class);
         this.thrown.expectMessage(""); // FIXME
         this.webRepo.getUrl(url);
@@ -104,6 +114,7 @@ public class WebRepositoryImplTest {
     public void get_timeout() {
         String url = "http://httpbin.org/delay/20";
 
+        // テストを実行(テスト結果として例外を期待)
         this.thrown.expect(ReadWebResourceException.class);
         this.thrown.expectMessage(""); // FIXME
         this.webRepo.getUrl(url);
@@ -111,9 +122,11 @@ public class WebRepositoryImplTest {
 
     @Test
     public void get_user_header_check() {
+        // テストを実行
         String url = "http://httpbin.org/get";
         String data = this.webRepo.getUrl(url);
 
+        // テスト結果を確認
         String expectedUserAgent = "\"User-Agent\": \"me.u6k.plantuml-image-generator:plantuml-image-generator/" + this.appVersion + "\"";
         assertThat(data.indexOf(expectedUserAgent), not(-1));
     }
