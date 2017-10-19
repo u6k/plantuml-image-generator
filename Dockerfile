@@ -1,5 +1,16 @@
 FROM openjdk:8-alpine AS dev
 
+# Install japanese font
+RUN apk update && \
+    apk upgrade && \
+    apk --no-cache add fontconfig && \
+    mkdir -p ~/.fonts && \
+    cd ~/.fonts && \
+    wget -O ipagp00303.zip http://ipafont.ipa.go.jp/old/ipafont/ipagp00303.php && \
+    unzip ipagp00303.zip && \
+    rm ipagp00303.zip && \
+    fc-cache -fv
+
 # Build application
 COPY . /var/plantuml-image-generator
 WORKDIR /var/plantuml-image-generator
