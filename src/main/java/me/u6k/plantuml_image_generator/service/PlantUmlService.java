@@ -7,6 +7,7 @@ import java.net.URLDecoder;
 
 import me.u6k.plantuml_image_generator.model.WebRepository;
 import net.sourceforge.plantuml.SourceStringReader;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class PlantUmlService {
          * 入力チェック
          */
         L.debug("#generate: url={}", url);
-        if (url == null) {
-            throw new IllegalArgumentException("url is null.");
+        if (StringUtils.isBlank(url)) {
+            throw new IllegalArgumentException("url is blank.");
         }
 
         /*

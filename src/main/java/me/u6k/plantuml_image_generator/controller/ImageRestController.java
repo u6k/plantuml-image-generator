@@ -39,7 +39,7 @@ public class ImageRestController {
         headers.add("X-Api-Version", this.appVersion);
 
         ResponseEntity<byte[]> resp = new ResponseEntity<byte[]>(image, headers, HttpStatus.OK);
-        L.debug("build response data end: length={}", resp.getBody().length);
+        L.debug("build response data end: length={}", image.length);
 
         return resp;
     }
