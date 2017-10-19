@@ -1,0 +1,29 @@
+sudo: required
+language: java
+
+services:
+    - docker
+
+before_install:
+    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    - sudo apt-get update
+    - sudo apt-get -y install docker-ce
+
+script:
+    - docker build -t plantuml-image-generator-dev -f Dockerfile-dev .
+    - docker run --rm -v ${HOME}/.m2:/root/.m2 -v ${PWD}:/var/plantuml-image-generator plantuml-image-generator-dev ./mvnw clean site
+    - docker build -t u6kapps/plantuml-image-generator .
+
+after_success:
+    - if [ -n "$TRAVIS_TAG" ]; then
+          docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
+          docker tag u6kapps/plantuml-image-generator u6kapps/plantuml-image-generator:$TRAVIS_TAG;
+          docker push u6kapps/plantuml-image-generator;
+      else
+          echo skip docker push;
+      fi
+
+notifications:
+  slack:
+    secure: ISWThdSWx1YHpXY3wLWEz1UXHslaCTew6hjeI1AGNHfEvYdTHpWD4pqU5qGVDTtP+j4gxfROg/mcvaE2ntzEi7NTibzUnocdE7EsWzc6k1QfU8JaqIb+eHHHPpKsUEEaOqKo28PalCJ2lIveFq5bM8+B9mN5GWqawSlvfMLzRUSTEVasx0KI6BRGSmKkuYXupZl/hAH4yd1tYiHzjOLatAbao2dbwNXuIGfTVLIr5of10U29ijGdbiPuWJ5A8p9Xa2goeDv6jdBX2XUB7w/sERmM07jZMdlQUz+Jx6f1llaYI/tLAdZU6ozk7nvSmhDWszUjrcD3h0ae/jTTjLxIYQBJt0Nq4eur2kQVFiaOx1sRks1Ue9USGBxQCqbOsD1jbqRam9B9b12x8wctU3ZDLXT7++jAPvxWLC81CZqbbCA0etjLkWA8C0WL1LC09Y8ssfbYSzF8i3knRT0Nz1t0ThgoZiYTFoe6axKKwIGGWNyoiCU0zxNe03BZ4wA/3006Hlspw6EdBfOOHWBNV/tY9jdEkr0MjmeaKkYES+1Y0Cs5k5nus+huw3hQoPwAyfsPaXwllIm61KPOmIUjYWQfmqPhxFfXehw7Cmt5qnwdpI/R4Ba1IM1CcmnZDN8/xH0t81MwxfInOPHa7DrYDnO6YYrQszIwzF2PJVpCN5cRW/4=

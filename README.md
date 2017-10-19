@@ -1,6 +1,6 @@
 # plantuml-image-generator
 
-[![CircleCI](https://img.shields.io/circleci/project/github/u6k/plantuml-image-generator.svg)](https://circleci.com/gh/u6k/plantuml-image-generator) [![GitHub release](https://img.shields.io/github/release/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/releases) [![license](https://img.shields.io/github/license/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE) [![Docker Stars](https://img.shields.io/docker/stars/u6kapps/plantuml-image-generator.svg)](https://hub.docker.com/r/u6kapps/plantuml-image-generator/) [![project-reports](https://img.shields.io/badge/site-project--reports-orange.svg)](https://u6k.github.io/plantuml-image-generator/project-reports.html)
+[![Travis](https://img.shields.io/travis/u6k/plantuml-image-generator.svg)](https://travis-ci.org/u6k/plantuml-image-generator) [![GitHub release](https://img.shields.io/github/release/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/releases) [![license](https://img.shields.io/github/license/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE) [![Docker Stars](https://img.shields.io/docker/stars/u6kapps/plantuml-image-generator.svg)](https://hub.docker.com/r/u6kapps/plantuml-image-generator/) [![project-reports](https://img.shields.io/badge/site-project--reports-orange.svg)](https://u6k.github.io/plantuml-image-generator/project-reports.html)
 
 PlantUML文書を渡すと画像を返すAPI
 
@@ -35,23 +35,51 @@ TODO
 Eclipseプロジェクトを作成します。
 
 ```
-$ ./gradlew eclipse
+$ ./mvnw eclipse:eclipse
 ```
 
-実行します。
+### ローカル動作確認
 
 ```
-$ ./gradlew bootRun
+$ ./mvnw spring-boot:run
 ```
 
-### CircleCI CLIでビルド確認
-
-- [Using the CircleCI Command Line Interface (CLI) - CircleCI](https://circleci.com/docs/2.0/local-jobs/)
-
-CircleCI CLIをインストールして、以下を実行します。
+### 開発用Dockerイメージを構築
 
 ```
-$ circleci build
+$ docker build -t plantuml-image-generator-dev -f Dockerfile-dev .
+```
+
+### ユニット・テスト
+
+使用するフォントによって出力される画像が異なり、テスト期待データはDockerコンテナ環境を想定しているため、開発用Dockerコンテナで実行します。
+
+```
+$ docker run \
+    --rm \
+    -v ${HOME}/.m2:/root/.m2 \
+    -v ${PWD}:/var/plantuml-image-generator \
+    plantuml-image-generator-dev \
+        ./mvnw clean surefire-report:report
+```
+
+### E2Eテスト
+
+TODO
+
+### 実行用Dockerイメージを構築
+
+```
+$ docker build -t plantuml-image-generator .
+```
+
+### 実行
+
+```
+$ docker run \
+    --rm \
+    -p 8080:8080 \
+    plantuml-image-generator
 ```
 
 ## Author
