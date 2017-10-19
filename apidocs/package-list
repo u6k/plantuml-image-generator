@@ -1,0 +1,5 @@
+me.u6k.plantuml_image_generator
+me.u6k.plantuml_image_generator.controller
+me.u6k.plantuml_image_generator.exception
+me.u6k.plantuml_image_generator.model
+me.u6k.plantuml_image_generator.service
