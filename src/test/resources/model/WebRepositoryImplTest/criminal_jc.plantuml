@@ -1,0 +1,99 @@
+@startuml
+
+!define SenmonName 誤認逮捕された専門学校生
+!define CriminalName 犯罪中学生
+!define RakusatsuName 落札者
+!define JK2Name 女子高生と社会人の2人
+!define TicketShopName チケット転売サイト
+
+participant "SenmonName" as Senmon
+participant "CriminalName" as Criminal
+participant "JK2Name" as JK_2
+participant "TicketShopName" as TicketShop
+participant "RakusatsuName" as Rakusatsu
+participant "警察" as Keisatsu
+participant "検察" as Kensatsu
+participant "裁判所" as Saibansho
+
+== 2016年8月 ==
+Senmon     -> Criminal   : チケット 8 万円で売りますとツイート
+Senmon     <- Criminal   : 買います
+Senmon    --> Criminal   : 「SenmonName」の口座を教える
+rnote over Criminal
+「SenmonName」になりすましたアカウントを開設
+endnote
+Criminal   -> JK_2       : チケット 4 万円で売りますとツイート
+loop 2回
+Criminal   <- JK_2       : 買います
+Criminal  --> JK_2       : 「SenmonName」の口座を教える
+JK_2       -> Senmon     : それぞれ4万円入金 (合計 8 万円)
+end
+Senmon     -> Criminal   : チケット送付先を教えてください
+Criminal   -> TicketShop : 架空チケットを「SenmonName」名義で6万5千円で出品
+TicketShop <- Rakusatsu  : チケットを落札
+Criminal   <- TicketShop : 落札の通知と「RakusatsuName」情報を提示
+Senmon    <-- Criminal   : 「RakusatsuName」の住所を教える
+Senmon     -> Rakusatsu  : チケットを書留で送付
+TicketShop <- Rakusatsu  : チケット代を入金
+Criminal   <- TicketShop : チケット代の入金通知
+Criminal   -> TicketShop : チケット代の口座振込依頼
+Criminal  <-- TicketShop : 売上金を「CriminalName」の口座に振込
+rnote over Senmon
+チケット転売に関するツイートを削除
+endnote
+rnote over Criminal
+なりすましアカウントを削除
+endnote
+JK_2       -> Keisatsu   : チケットが届かないため、相談の上、被害届を提出
+rnote over Keisatsu
+「SenmonName」
+の口座から住所を把握
+endnote
+Keisatsu   -> Saibansho  : 逮捕令状を請求
+Saibansho --> Keisatsu   : 逮捕令状を発行
+== 2017年5月15日 ==
+group 「SenmonName」の勾留期間は19日間
+Keisatsu   -> Senmon     : 詐欺の容疑で逮捕・取り調べ（48時間以内）
+Keisatsu   -> Kensatsu   : 送検
+Kensatsu   -> Senmon     : 取り調べ（24時間以内）
+Senmon    --> Kensatsu   : 容疑を否認
+Kensatsu   -> Saibansho  : 勾留請求
+Saibansho  -> Senmon     : 勾留質問
+Saibansho --> Kensatsu   : 勾留決定
+Kensatsu   -> Senmon     : 取り調べ（10日間）
+Senmon    --> Kensatsu   : 容疑を否認
+Kensatsu   -> Saibansho  : 勾留延長請求
+Saibansho --> Kensatsu   : 勾留延長決定
+Kensatsu   -> Senmon     : 取り調べ（10日間以内）
+Senmon    --> Kensatsu   : 容疑を否認
+Kensatsu   -> Keisatsu   : 処分保留
+Keisatsu   -> Senmon     : 釈放
+rnote over Criminal, TicketShop
+「SenmonName」は転売に関するツイートを削除しており、また１年近く前の
+話であったため、「RakusatsuName」の住所やチケットを発送した郵便局の場所を忘れていた。
+「CriminalName」が削除したアカウントについても、ツイッター社から
+情報を得られなかったため、「JK2Name」が入金した事実しか検察にとって
+明らかでなく、「SenmonName」以外の容疑者がこの時点では浮かばなかった。
+endnote
+end
+rnote over Senmon
+チケット発送に使った郵便局を思い出す
+endnote
+rnote over Senmon
+チケット配送記録を郵便局から取得する
+endnote
+Senmon      -> Keisatsu   : 「RakusatsuName」へのチケット配送記録を提出
+Keisatsu    -> Rakusatsu  : 送金先を教えてください
+Rakusatsu  --> Keisatsu   : 「TicketShopName」の情報を提示
+Keisatsu    -> TicketShop : チケット転売元の情報を教えてください
+TicketShop --> Keisatsu   : 「CriminalName」の口座を含む情報を提示
+rnote over Keisatsu
+「CriminalName」
+の口座から住所を把握
+endnote
+Keisatsu    -> Criminal   : 詐欺の容疑で取り調べ
+Criminal   --> Keisatsu   : 容疑を認める
+Senmon      <- Keisatsu   : 女性に謝罪
+== 2017年9月11日 ==
+Keisatsu    -> Kensatsu   : 書類送検
+@enduml
