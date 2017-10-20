@@ -3,7 +3,6 @@ package me.u6k.plantuml_image_generator.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URLDecoder;
 
 import me.u6k.plantuml_image_generator.model.WebRepository;
 import net.sourceforge.plantuml.SourceStringReader;
@@ -33,9 +32,6 @@ public class PlantUmlService {
         /*
          * URLからデータを取得
          */
-        url = URLDecoder.decode(url, "UTF-8");
-        L.debug("url decoded: url={}", url);
-
         String umlText = this.webRepo.getUrl(url);
 
         /*
