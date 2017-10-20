@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import me.u6k.plantuml_image_generator.exception.ReadWebResourceException;
 import me.u6k.plantuml_image_generator.service.PlantUmlService;
+import net.sourceforge.plantuml.FileFormat;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +39,7 @@ public class ImageRestControllerTest {
         // モックを設定
         String expectedUmlPath = "/service/PlantUmlServiceTest/simple_uml.png";
         byte[] expectedUmlData = IOUtils.toByteArray(this.getClass().getResourceAsStream(expectedUmlPath));
-        given(this.service.generate(url)).willReturn(expectedUmlData);
+        given(this.service.generate(url, FileFormat.PNG)).willReturn(expectedUmlData);
 
         // テストを実行
         ResultActions result = this.mvc.perform(get("/images/http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000.png"));
@@ -67,7 +68,7 @@ public class ImageRestControllerTest {
         String url = "http://httpbin.org/delay/20";
 
         // モックを設定
-        given(this.service.generate(url)).willThrow(new ReadWebResourceException("timeout")); // FIXME
+        given(this.service.generate(url, FileFormat.PNG)).willThrow(new ReadWebResourceException("timeout")); // FIXME
 
         // テストを実行
         ResultActions result = this.mvc.perform(get("/images/http%3a%2f%2fhttpbin%2eorg%2fdelay%2f20.png"));

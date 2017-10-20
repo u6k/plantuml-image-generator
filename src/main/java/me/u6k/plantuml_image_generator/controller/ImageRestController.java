@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 
 import me.u6k.plantuml_image_generator.service.PlantUmlService;
+import net.sourceforge.plantuml.FileFormat;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,7 @@ public class ImageRestController {
         String url = URLDecoder.decode(encodedUrl, "UTF-8");
         L.debug("url decoded: {}", url);
 
-        byte[] image = this.plantUmlService.generate(url);
+        byte[] image = this.plantUmlService.generate(url, FileFormat.PNG);
 
         /*
          * レスポンスを構築
