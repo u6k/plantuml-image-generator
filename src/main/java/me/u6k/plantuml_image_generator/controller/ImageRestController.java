@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,8 +30,8 @@ public class ImageRestController {
     @Value("${info.app.version}")
     private String appVersion;
 
-    @RequestMapping(value = "/images/{encodedUrl}.png", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> generateImage(@PathVariable("encodedUrl") String encodedUrl) throws IOException {
+    @RequestMapping(value = "/images", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> generateImage(@RequestParam("url") String encodedUrl) throws IOException {
         L.debug("#generateImage: encodedUrl={}", encodedUrl);
 
         /*
