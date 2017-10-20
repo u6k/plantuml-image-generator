@@ -31,8 +31,8 @@ public class ImageRestController {
     private String appVersion;
 
     @RequestMapping(value = "/images", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> generateImage(@RequestParam("url") String encodedUrl) throws IOException {
-        L.debug("#generateImage: encodedUrl={}", encodedUrl);
+    public ResponseEntity<byte[]> generateImage(@RequestParam("url") String encodedUrl, @RequestParam(name = "format", required = false) String format) throws IOException {
+        L.debug("#generateImage: encodedUrl={}, format={}", encodedUrl, format);
 
         /*
          * 入力チェック
@@ -41,20 +41,40 @@ public class ImageRestController {
             throw new IllegalArgumentException("encodedUrl is blank.");
         }
 
+        FileFormat fileFormat;
+        if (StringUtils.isBlank(format)) {
+            fileFormat = FileFormat.PNG;
+        } else if (StringUtils.equalsIgnoreCase(format, "png")) {
+            fileFormat = FileFormat.PNG;
+        } else if (StringUtils.equalsIgnoreCase(format, "svg")) {
+            fileFormat = FileFormat.SVG;
+        } else {
+            throw new IllegalArgumentException("\"" + format + "\" is unknown format.");
+        }
+
         /*
          * URLから画像データを作成
          */
         String url = URLDecoder.decode(encodedUrl, "UTF-8");
         L.debug("url decoded: {}", url);
 
-        byte[] image = this.plantUmlService.generate(url, FileFormat.PNG);
+        byte[] image = this.plantUmlService.generate(url, fileFormat);
 
         /*
          * レスポンスを構築
          */
         L.debug("build response data start:");
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "image/png");
+        switch (fileFormat) {
+            case PNG:
+                headers.add("Content-Type", "image/png");
+                break;
+            case SVG:
+                headers.add("Content-Type", "image/svg+xml");
+                break;
+            default:
+                throw new IllegalArgumentException("\"" + format + "\" is unknown format.");
+        }
         headers.add("X-Api-Version", this.appVersion);
 
         ResponseEntity<byte[]> resp = new ResponseEntity<byte[]>(image, headers, HttpStatus.OK);

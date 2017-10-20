@@ -50,10 +50,41 @@ public class ImageRestControllerTest {
     }
 
     @Test
-    public void 不正な引数_urlが空文字列() throws Exception {
+    public void 画像を生成_png() throws Exception {
         // モックを設定
-        given(this.service.generate("", FileFormat.PNG)).willThrow(new IllegalArgumentException("encodedUrl is blank."));
+        String url = "http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000";
+        byte[] expectedContent = IOUtils.toByteArray(this.getClass().getResourceAsStream("/service/PlantUmlServiceTest/simple_uml.png"));
+        given(this.service.generate(url, FileFormat.PNG)).willReturn(expectedContent);
 
+        // テストを実行
+        ResultActions result = this.mvc.perform(get("/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000&format=png"));
+
+        // テスト結果を確認
+        result.andExpect(status().isOk())
+            .andExpect(header().string("X-Api-Version", this.appVersion))
+            .andExpect(header().string("Content-Type", "image/png"))
+            .andExpect(content().bytes(expectedContent));
+    }
+
+    @Test
+    public void 画像を生成_svg() throws Exception {
+        // モックを設定
+        String url = "http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000";
+        byte[] expectedContent = IOUtils.toByteArray(this.getClass().getResourceAsStream("/service/PlantUmlServiceTest/simple_uml.svg"));
+        given(this.service.generate(url, FileFormat.SVG)).willReturn(expectedContent);
+
+        // テストを実行
+        ResultActions result = this.mvc.perform(get("/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000&format=svg"));
+
+        // テスト結果を確認
+        result.andExpect(status().isOk())
+            .andExpect(header().string("X-Api-Version", this.appVersion))
+            .andExpect(header().string("Content-Type", "image/svg+xml"))
+            .andExpect(content().bytes(expectedContent));
+    }
+
+    @Test
+    public void 不正な引数_urlが空文字列() throws Exception {
         // テストを実行
         ResultActions result = this.mvc.perform(get("/images?url="));
 
@@ -62,6 +93,18 @@ public class ImageRestControllerTest {
             .andExpect(header().string("X-Api-Version", this.appVersion))
             .andExpect(header().string("Content-Type", "application/json"))
             .andExpect(content().string("{\"code\":\"java.lang.IllegalArgumentException\",\"message\":\"encodedUrl is blank.\"}"));
+    }
+
+    @Test
+    public void 不正な引数_formatに存在しないフォーマット() throws Exception {
+        // テストを実行
+        ResultActions result = this.mvc.perform(get("/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000&format=a"));
+
+        // テスト結果を確認
+        result.andExpect(status().isBadRequest())
+            .andExpect(header().string("X-Api-Version", this.appVersion))
+            .andExpect(header().string("Content-Type", "application/json"))
+            .andExpect(content().string("{\"code\":\"java.lang.IllegalArgumentException\",\"message\":\"\\\"a\\\" is unknown format.\"}"));
     }
 
     @Test
