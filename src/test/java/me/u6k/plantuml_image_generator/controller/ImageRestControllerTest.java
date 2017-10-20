@@ -41,7 +41,7 @@ public class ImageRestControllerTest {
         given(this.service.generate(url)).willReturn(expectedUmlData);
 
         // テストを実行
-        ResultActions result = this.mvc.perform(get("/image.png").param("url", url));
+        ResultActions result = this.mvc.perform(get("/images/http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000.png"));
 
         // テスト結果を確認
         result.andExpect(status().isOk())
@@ -52,12 +52,13 @@ public class ImageRestControllerTest {
 
     @Test
     public void service_throw_illegalArgumentException() throws Exception {
+        String url = "http://example.com/service_throw_illegalArgumentException";
+
         // モックを設定
-        given(this.service.generate(""))
-            .willThrow(new IllegalArgumentException("url is blank."));
+        given(this.service.generate(url)).willThrow(new IllegalArgumentException("url is blank."));
 
         // テストを実行
-        ResultActions result = this.mvc.perform(get("/image.png").param("url", ""));
+        ResultActions result = this.mvc.perform(get("/images/http%3a%2f%2fexample%2ecom%2fservice_throw_illegalArgumentException.png"));
 
         // テスト結果を確認
         result.andExpect(status().isBadRequest())
@@ -71,11 +72,10 @@ public class ImageRestControllerTest {
         String url = "http://httpbin.org/delay/20";
 
         // モックを設定
-        given(this.service.generate(url))
-            .willThrow(new ReadWebResourceException("timeout")); // FIXME
+        given(this.service.generate(url)).willThrow(new ReadWebResourceException("timeout")); // FIXME
 
         // テストを実行
-        ResultActions result = this.mvc.perform(get("/image.png").param("url", url));
+        ResultActions result = this.mvc.perform(get("/images/http%3a%2f%2fhttpbin%2eorg%2fdelay%2f20.png"));
 
         // テスト結果を確認
         result.andExpect(status().isInternalServerError())
