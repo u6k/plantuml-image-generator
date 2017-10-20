@@ -52,19 +52,14 @@ public class ImageRestControllerTest {
 
     @Test
     public void service_throw_illegalArgumentException() throws Exception {
-        String url = "http://example.com/service_throw_illegalArgumentException";
-
-        // モックを設定
-        given(this.service.generate(url)).willThrow(new IllegalArgumentException("url is blank."));
-
         // テストを実行
-        ResultActions result = this.mvc.perform(get("/images/http%3a%2f%2fexample%2ecom%2fservice_throw_illegalArgumentException.png"));
+        ResultActions result = this.mvc.perform(get("/images/.png"));
 
         // テスト結果を確認
         result.andExpect(status().isBadRequest())
             .andExpect(header().string("X-Api-Version", this.appVersion))
             .andExpect(header().string("Content-Type", "application/json"))
-            .andExpect(content().string("{\"code\":\"java.lang.IllegalArgumentException\",\"message\":\"url is blank.\"}"));
+            .andExpect(content().string("{\"code\":\"java.lang.IllegalArgumentException\",\"message\":\"encodedUrl is blank.\"}"));
     }
 
     @Test
