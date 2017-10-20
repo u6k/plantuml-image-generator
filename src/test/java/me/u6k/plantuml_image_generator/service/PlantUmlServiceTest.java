@@ -94,6 +94,7 @@ public class PlantUmlServiceTest {
         // assertThat(expectedData, is(actualData));
     }
 
+    @Test
     public void invalid_argument_url_blank_1() throws IOException {
         // テストを実行(テスト結果として例外を期待)
         this.thrown.expect(IllegalArgumentException.class);
@@ -101,6 +102,7 @@ public class PlantUmlServiceTest {
         this.service.generate(null);
     }
 
+    @Test
     public void invalid_argument_url_blank_2() throws IOException {
         // テストを実行(テスト結果として例外を期待)
         this.thrown.expect(IllegalArgumentException.class);
@@ -108,6 +110,7 @@ public class PlantUmlServiceTest {
         this.service.generate("");
     }
 
+    @Test
     public void invalid_argument_url_blank_3() throws IOException {
         // テストを実行(テスト結果として例外を期待)
         this.thrown.expect(IllegalArgumentException.class);
