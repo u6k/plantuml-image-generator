@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import me.u6k.plantuml_image_generator.exception.ReadWebResourceException;
 import me.u6k.plantuml_image_generator.service.PlantUmlService;
+import net.sourceforge.plantuml.FileFormat;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,38 +23,70 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest
 public class ImageRestControllerTest {
 
-    @MockBean
-    private PlantUmlService service;
-
     @Value("${info.app.version}")
     private String appVersion;
 
     @Autowired
     private MockMvc mvc;
 
-    @Test
-    public void generate_image() throws Exception {
-        String url = "http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000";
+    @MockBean
+    private PlantUmlService service;
 
+    @Test
+    public void 画像を生成() throws Exception {
         // モックを設定
-        String expectedUmlPath = "/service/PlantUmlServiceTest/simple_uml.png";
-        byte[] expectedUmlData = IOUtils.toByteArray(this.getClass().getResourceAsStream(expectedUmlPath));
-        given(this.service.generate(url)).willReturn(expectedUmlData);
+        String url = "http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000";
+        byte[] expectedContent = IOUtils.toByteArray(this.getClass().getResourceAsStream("/service/PlantUmlServiceTest/simple_uml.png"));
+        given(this.service.generate(url, FileFormat.PNG)).willReturn(expectedContent);
 
         // テストを実行
-        ResultActions result = this.mvc.perform(get("/images/http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000.png"));
+        ResultActions result = this.mvc.perform(get("/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000"));
 
         // テスト結果を確認
         result.andExpect(status().isOk())
             .andExpect(header().string("X-Api-Version", this.appVersion))
             .andExpect(header().string("Content-Type", "image/png"))
-            .andExpect(content().bytes(expectedUmlData));
+            .andExpect(content().bytes(expectedContent));
     }
 
     @Test
-    public void service_throw_illegalArgumentException() throws Exception {
+    public void 画像を生成_png() throws Exception {
+        // モックを設定
+        String url = "http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000";
+        byte[] expectedContent = IOUtils.toByteArray(this.getClass().getResourceAsStream("/service/PlantUmlServiceTest/simple_uml.png"));
+        given(this.service.generate(url, FileFormat.PNG)).willReturn(expectedContent);
+
         // テストを実行
-        ResultActions result = this.mvc.perform(get("/images/.png"));
+        ResultActions result = this.mvc.perform(get("/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000&format=png"));
+
+        // テスト結果を確認
+        result.andExpect(status().isOk())
+            .andExpect(header().string("X-Api-Version", this.appVersion))
+            .andExpect(header().string("Content-Type", "image/png"))
+            .andExpect(content().bytes(expectedContent));
+    }
+
+    @Test
+    public void 画像を生成_svg() throws Exception {
+        // モックを設定
+        String url = "http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000";
+        byte[] expectedContent = IOUtils.toByteArray(this.getClass().getResourceAsStream("/service/PlantUmlServiceTest/simple_uml.svg"));
+        given(this.service.generate(url, FileFormat.SVG)).willReturn(expectedContent);
+
+        // テストを実行
+        ResultActions result = this.mvc.perform(get("/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000&format=svg"));
+
+        // テスト結果を確認
+        result.andExpect(status().isOk())
+            .andExpect(header().string("X-Api-Version", this.appVersion))
+            .andExpect(header().string("Content-Type", "image/svg+xml"))
+            .andExpect(content().bytes(expectedContent));
+    }
+
+    @Test
+    public void 不正な引数_urlが空文字列() throws Exception {
+        // テストを実行
+        ResultActions result = this.mvc.perform(get("/images?url="));
 
         // テスト結果を確認
         result.andExpect(status().isBadRequest())
@@ -63,20 +96,30 @@ public class ImageRestControllerTest {
     }
 
     @Test
-    public void service_throw_readWebResourceException() throws Exception {
-        String url = "http://httpbin.org/delay/20";
+    public void 不正な引数_formatに存在しないフォーマット() throws Exception {
+        // テストを実行
+        ResultActions result = this.mvc.perform(get("/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000&format=a"));
 
+        // テスト結果を確認
+        result.andExpect(status().isBadRequest())
+            .andExpect(header().string("X-Api-Version", this.appVersion))
+            .andExpect(header().string("Content-Type", "application/json"))
+            .andExpect(content().string("{\"code\":\"java.lang.IllegalArgumentException\",\"message\":\"\\\"a\\\" is unknown format.\"}"));
+    }
+
+    @Test
+    public void タイムアウト() throws Exception {
         // モックを設定
-        given(this.service.generate(url)).willThrow(new ReadWebResourceException("timeout")); // FIXME
+        given(this.service.generate("http://httpbin.org/delay/20", FileFormat.PNG)).willThrow(new ReadWebResourceException("java.net.SocketTimeoutException: Read timed out"));
 
         // テストを実行
-        ResultActions result = this.mvc.perform(get("/images/http%3a%2f%2fhttpbin%2eorg%2fdelay%2f20.png"));
+        ResultActions result = this.mvc.perform(get("/images?url=http%3a%2f%2fhttpbin%2eorg%2fdelay%2f20"));
 
         // テスト結果を確認
         result.andExpect(status().isInternalServerError())
             .andExpect(header().string("X-Api-Version", this.appVersion))
             .andExpect(header().string("Content-Type", "application/json"))
-            .andExpect(content().string("{\"code\":\"me.u6k.plantuml_image_generator.exception.ReadWebResourceException\",\"message\":\"timeout\"}"));
+            .andExpect(content().string("{\"code\":\"me.u6k.plantuml_image_generator.exception.ReadWebResourceException\",\"message\":\"java.net.SocketTimeoutException: Read timed out\"}"));
     }
 
 }

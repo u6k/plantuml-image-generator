@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 
 import me.u6k.plantuml_image_generator.service.PlantUmlService;
+import net.sourceforge.plantuml.FileFormat;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,9 +30,9 @@ public class ImageRestController {
     @Value("${info.app.version}")
     private String appVersion;
 
-    @RequestMapping(value = "/images/{encodedUrl}.png", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> generateImage(@PathVariable("encodedUrl") String encodedUrl) throws IOException {
-        L.debug("#generateImage: encodedUrl={}", encodedUrl);
+    @RequestMapping(value = "/images", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> generateImage(@RequestParam("url") String encodedUrl, @RequestParam(name = "format", required = false) String format) throws IOException {
+        L.debug("#generateImage: encodedUrl={}, format={}", encodedUrl, format);
 
         /*
          * 入力チェック
@@ -40,20 +41,40 @@ public class ImageRestController {
             throw new IllegalArgumentException("encodedUrl is blank.");
         }
 
+        FileFormat fileFormat;
+        if (StringUtils.isBlank(format)) {
+            fileFormat = FileFormat.PNG;
+        } else if (StringUtils.equalsIgnoreCase(format, "png")) {
+            fileFormat = FileFormat.PNG;
+        } else if (StringUtils.equalsIgnoreCase(format, "svg")) {
+            fileFormat = FileFormat.SVG;
+        } else {
+            throw new IllegalArgumentException("\"" + format + "\" is unknown format.");
+        }
+
         /*
          * URLから画像データを作成
          */
         String url = URLDecoder.decode(encodedUrl, "UTF-8");
         L.debug("url decoded: {}", url);
 
-        byte[] image = this.plantUmlService.generate(url);
+        byte[] image = this.plantUmlService.generate(url, fileFormat);
 
         /*
          * レスポンスを構築
          */
         L.debug("build response data start:");
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "image/png");
+        switch (fileFormat) {
+            case PNG:
+                headers.add("Content-Type", "image/png");
+                break;
+            case SVG:
+                headers.add("Content-Type", "image/svg+xml");
+                break;
+            default:
+                throw new IllegalArgumentException("\"" + format + "\" is unknown format.");
+        }
         headers.add("X-Api-Version", this.appVersion);
 
         ResponseEntity<byte[]> resp = new ResponseEntity<byte[]>(image, headers, HttpStatus.OK);
