@@ -1,58 +1,120 @@
 # plantuml-image-generator
 
-[![Travis](https://img.shields.io/travis/u6k/plantuml-image-generator.svg)](https://travis-ci.org/u6k/plantuml-image-generator) [![GitHub release](https://img.shields.io/github/release/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/releases) [![license](https://img.shields.io/github/license/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE) [![Docker Stars](https://img.shields.io/docker/stars/u6kapps/plantuml-image-generator.svg)](https://hub.docker.com/r/u6kapps/plantuml-image-generator/) [![project-reports](https://img.shields.io/badge/site-project--reports-orange.svg)](https://u6k.github.io/plantuml-image-generator/project-reports.html)
+[![Travis](https://img.shields.io/travis/u6k/plantuml-image-generator.svg)](https://travis-ci.org/u6k/plantuml-image-generator)
+[![GitHub release](https://img.shields.io/github/release/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/releases)
+[![license](https://img.shields.io/github/license/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE)
+[![Docker Stars](https://img.shields.io/docker/stars/u6kapps/plantuml-image-generator.svg)](https://hub.docker.com/r/u6kapps/plantuml-image-generator/)
+[![project-reports](https://img.shields.io/badge/site-project--reports-orange.svg)](https://u6k.github.io/plantuml-image-generator/project-reports.html)
+[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-PlantUML文書を渡すと画像を返すAPI
+> PlantUML文書が存在するURL渡すと画像を返すWebAPIです。
 
-## Description
+ブログにPlantUML画像を埋め込むときに、PlantUML文書から画像ファイルを生成してその画像ファイルをimgタグに指定することは、少々メンドウです。できれば、GistにPlantUML文書をアップロードして、URLを指定するだけでPlantUML画像を表示したいです(画像生成を省略したい)。それを実現するために、plantuml-image-generatorを構築しました。
 
-GitHubのようなオンラインにあるPlantUML文書のURLを渡すだけで画像を返すAPIが欲しい。ブログに埋め込みたい。PlantUML Serverというサービスもありますが、あれはPlantUML文書を全文入力しなければならないので、例えばGitHub側で修正しても、画像に反映されません。
+plantuml-image-generatorにPlantUML文書のURLを渡すと画像を生成します。詳しくは[Demo](#demo)をご覧ください。
 
-## DEMO
+## Table of Contents
 
-TODO
+<!-- TOC depthFrom:2 -->
 
-## Features
+- [Table of Contents](#table-of-contents)
+- [Install](#install)
+- [Usage](#usage)
+- [Demo](#demo)
+- [API](#api)
+- [Maintainer](#maintainer)
+- [Contribute](#contribute)
+- [License](#license)
 
-- PlantUML文書のURLを指定して、画像データ(png/svg)を返します。
+<!-- /TOC -->
+
+## Install
+
+Dockerイメージを配布しているため、次のように実行することができます。
+
+```
+$ docker run \
+    -p 8080:8080 \
+    u6kapps/plantuml-image-generator
+```
+
+jarファイルを実行することもできます。
+
+```
+$ java -jar plantuml-image-generator-x.x.x.jar
+```
 
 ## Usage
 
-こんな感じで、PlantUML文書のURLを指定して、画像を表示したい。
+`/images`エンドポイントにURLを渡すと、画像が生成されます。この時、URLパラメータはURLエンコードしてください。
+
+例えば、[https://goo.gl/ERJqwh](https://goo.gl/ERJqwh)の画像を生成する場合は、次のようにアクセスします。
+
+- http://localhost:8080/images?url=https%3A%2F%2Fgoo.gl%2FERJqwh
+
+HTML文書に埋め込む場合は、次のようにimgタグを書きます。
 
 ```
-<img src="https://xxx.com/image.png?url=http://github.com/xxx.pu">
+<img src="http://localhost:8080/images?url=https%3A%2F%2Fgoo.gl%2FERJqwh">
 ```
 
-## Installation
+Markdown文書に埋め込む場合は、次のように書きます。
 
-TODO
+```
+![](http://localhost:8080/images?url=https%3A%2F%2Fgoo.gl%2FERJqwh)
+```
 
-## Development
+## Demo
 
-### 開発環境を構築
+デモ・サービスとして、`plantuml-image-generator.u6k.me`が動作しています。次のURLにアクセスしてください。実際に画像が生成されます。
 
-Eclipseプロジェクトを作成します。
+- https://plantuml-image-generator.u6k.me/images?url=https%3A%2F%2Fgoo.gl%2FERJqwh
+
+## API
+
+WebAPI仕様は、次のURLで公開しています。
+
+- https://u6k.github.io/plantuml-image-generator/swagger/document.html
+
+Javadocは、次のURLで公開しています。
+
+- https://u6k.github.io/plantuml-image-generator/apidocs/index.html
+
+WebAPI仕様やJavadocを含むプロジェクト・レポートは、次のURLで公開しています。
+
+- https://u6k.github.io/plantuml-image-generator/index.html
+
+## Maintainer
+
+- [u6k - GitHub](https://github.com/u6k/)
+- [u6k.Blog()](https://blog.u6k.me/)
+- [u6k_yu1 | Twitter](https://twitter.com/u6k_yu1)
+
+## Contribute
+
+貴重なアイデアをご提案頂ける場合は、Issueを書いていただけると幸いです。あなたは、このプロジェクトに参加することによって、[Open Source Code of Conduct - thoughtbot](https://thoughtbot.com/open-source-code-of-conduct)を遵守することに同意します。
+
+次に、このプロジェクトで開発を行う手順を説明します。
+
+Eclipseプロジェクトを作成:
 
 ```
 $ ./mvnw eclipse:eclipse
 ```
 
-### ローカル動作確認
+ローカルで動作確認:
 
 ```
 $ ./mvnw spring-boot:run
 ```
 
-### 開発用Dockerイメージを構築
+開発用Dockerイメージをビルド:
 
 ```
 $ docker build -t plantuml-image-generator-dev -f Dockerfile-dev .
 ```
 
-### ユニット・テスト
-
-使用するフォントによって出力される画像が異なり、テスト期待データはDockerコンテナ環境を想定しているため、開発用Dockerコンテナで実行します。
+ユニット・テスト:
 
 ```
 $ docker run \
@@ -63,29 +125,24 @@ $ docker run \
         ./mvnw clean surefire-report:report
 ```
 
-### E2Eテスト
+E2Eテスト:
 
-TODO
+__TODO:__ E2Eテストは未実装です。
 
-### 実行用Dockerイメージを構築
+実行用Dockerイメージを構築:
 
 ```
 $ docker build -t plantuml-image-generator .
 ```
 
-### 実行
+実行:
 
 ```
 $ docker run \
-    --rm \
     -p 8080:8080 \
     plantuml-image-generator
 ```
 
-## Author
-
-- [u6k - GitHub](https://github.com/u6k)
-
 ## License
 
-[![GPL v3](https://img.shields.io/github/license/u6k/plantuml-image-generator.svg)](https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE)
+[GPL v3 &copy; 2017 u6k.apps@gmail.com](https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE)

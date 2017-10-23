@@ -4,11 +4,11 @@
 
     <groupId>me.u6k.plantuml-image-generator</groupId>
     <artifactId>plantuml-image-generator</artifactId>
-    <version>0.3.0</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>plantuml-image-generator</name>
-    <description>PlantUML文書を渡すと画像を返すAPI</description>
+    <description>PlantUML文書が存在するURL渡すと画像を返すWebAPIです。</description>
     <inceptionYear>2017</inceptionYear>
     <url>https://github.com/u6k/plantuml-image-generator/</url>
 
@@ -31,6 +31,7 @@
     </properties>
 
     <dependencies>
+        <!-- web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -39,11 +40,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- plantuml -->
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
             <version>8059</version>
         </dependency>
+        <!-- utility -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -55,15 +58,22 @@
             <version>3.6</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.5</version>
             <scope>test</scope>
+        </dependency>
+        <!-- test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- swagger -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-core</artifactId>
+            <version>1.5.16</version>
         </dependency>
     </dependencies>
 
@@ -81,6 +91,46 @@
                     <downloadSources>true</downloadSources>
                     <downloadJavadocs>true</downloadJavadocs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>true</springmvc>
+                            <locations>me.u6k.plantuml_image_generator.controller</locations>
+                            <schemes>https</schemes>
+                            <host>plantuml-image-generator.u6k.me</host>
+                            <basePath>/</basePath>
+                            <info>
+                                <title>${project.name} WebAPI Specification</title>
+                                <version>${project.version}</version>
+                                <license>
+                                    <name>GNU General Public License v3.0</name>
+                                    <url>https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE</url>
+                                </license>
+                                <contact>
+                                    <name>u6k Apps</name>
+                                    <url>https://github.com/u6k/plantuml-image-generator</url>
+                                    <email>u6k.apps@gmail.com</email>
+                                </contact>
+                            </info>
+                            <templatePath>${basedir}/src/site/swagger-template/strapdown.html.hbs</templatePath>
+                            <outputPath>${project.build.directory}/site/swagger/document.html</outputPath>
+                            <swaggerDirectory>${project.build.directory}/site/swagger</swaggerDirectory>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
