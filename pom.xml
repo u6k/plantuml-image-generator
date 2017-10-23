@@ -92,6 +92,46 @@
                     <downloadJavadocs>true</downloadJavadocs>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>true</springmvc>
+                            <locations>me.u6k.plantuml_image_generator.controller</locations>
+                            <schemes>https</schemes>
+                            <host>plantuml-image-generator.u6k.me</host>
+                            <basePath>/</basePath>
+                            <info>
+                                <title>${project.name} WebAPI Specification</title>
+                                <version>${project.version}</version>
+                                <license>
+                                    <name>GNU General Public License v3.0</name>
+                                    <url>https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE</url>
+                                </license>
+                                <contact>
+                                    <name>u6k Apps</name>
+                                    <url>https://github.com/u6k/plantuml-image-generator</url>
+                                    <email>u6k.apps@gmail.com</email>
+                                </contact>
+                            </info>
+                            <templatePath>${basedir}/src/main/site/swagger-template/strapdown.html.hbs</templatePath>
+                            <outputPath>${project.build.directory}/site/swagger/document.html</outputPath>
+                            <swaggerDirectory>${project.build.directory}/site/swagger</swaggerDirectory>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
