@@ -117,7 +117,7 @@
                                     <email>u6k.apps@gmail.com</email>
                                 </contact>
                             </info>
-                            <templatePath>${basedir}/src/main/site/swagger-template/strapdown.html.hbs</templatePath>
+                            <templatePath>${basedir}/src/site/swagger-template/strapdown.html.hbs</templatePath>
                             <outputPath>${project.build.directory}/site/swagger/document.html</outputPath>
                             <swaggerDirectory>${project.build.directory}/site/swagger</swaggerDirectory>
                         </apiSource>
