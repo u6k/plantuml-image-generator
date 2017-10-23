@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="plantuml-image-generator">
+    <body>
+        <menu ref="reports" />
+        <menu name="Additional">
+            <item name="Swagger HTML Document" href="swagger/document.html" />
+            <item name="Swagger JSON Document" href="swagger/swagger.json" />
+        </menu>
+    </body>
+</project>
