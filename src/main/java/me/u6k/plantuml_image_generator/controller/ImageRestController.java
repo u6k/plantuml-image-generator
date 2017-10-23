@@ -4,6 +4,12 @@ package me.u6k.plantuml_image_generator.controller;
 import java.io.IOException;
 import java.net.URLDecoder;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 import me.u6k.plantuml_image_generator.service.PlantUmlService;
 import net.sourceforge.plantuml.FileFormat;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Api
 public class ImageRestController {
 
     private static final Logger L = LoggerFactory.getLogger(ImageRestController.class);
@@ -30,8 +37,19 @@ public class ImageRestController {
     @Value("${info.app.version}")
     private String appVersion;
 
+    @ApiOperation(value = "Generate PlantUML Image(png or svg)", protocols = "https", produces = "image/png,image/svg+xml", responseHeaders = { @ResponseHeader(name = "X-Api-Version", description = "APIのバージョン番号") })
+    @ApiResponses(value = {
+        @ApiResponse(code = 400, message = "パラメータが不正な場合"),
+        @ApiResponse(code = 500, message = "PlantUML文書の取得に失敗した場合")
+    })
     @RequestMapping(value = "/images", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> generateImage(@RequestParam("url") String encodedUrl, @RequestParam(name = "format", required = false) String format) throws IOException {
+    public ResponseEntity<byte[]> generateImage(
+        @RequestParam(name = "url", required = true) //
+        @ApiParam(name = "url", required = true, value = "PlantUML文書が存在するURL。URLエンコードしてください。", example = "http%3A%2F%2Fwww.plantuml.com%2Fplantuml%2Fuml%2FSyfFKj2rKt3CoKnELR1Io4ZDoSa70000") //
+        String encodedUrl,
+        @RequestParam(name = "format", required = false) //
+        @ApiParam(name = "format", required = false, value = "画像形式。\"png\"または\"svg\"。", defaultValue = "png", example = "svg") //
+        String format) throws IOException {
         L.debug("#generateImage: encodedUrl={}, format={}", encodedUrl, format);
 
         /*
