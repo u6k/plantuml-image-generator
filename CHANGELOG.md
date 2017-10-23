@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.0](https://github.com/u6k/plantuml-image-generator/releases/tag/1.0.0) - 2017-10-23
+
+### Added
+
+- [機能 #5712: 画像(svg)を生成する - u6k.Redmine](https://redmine.u6k.me/issues/5712)
+
 ## [0.3.0](https://github.com/u6k/plantuml-image-generator/releases/tag/0.3.0) - 2017-10-19
 
 ### Added
