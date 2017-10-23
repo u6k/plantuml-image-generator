@@ -15,84 +15,122 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> me.u6k.plantuml_image_generator.exception.ReadWebResourceException;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> me.u6k.plantuml_image_generator.service.PlantUmlService;
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.io.IOUtils;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> org.junit.runner.RunWith;
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.annotation.Autowired;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.annotation.Value;
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> org.springframework.boot.test.mock.mockito.MockBean;
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> org.springframework.test.context.junit4.SpringRunner;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> org.springframework.test.web.servlet.MockMvc;
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> org.springframework.test.web.servlet.ResultActions;
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  @RunWith(SpringRunner.<strong class="jxr_keyword">class</strong>)
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  @WebMvcTest
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../me/u6k/plantuml_image_generator/controller/ImageRestControllerTest.html">ImageRestControllerTest</a> {
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      @MockBean
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>      <strong class="jxr_keyword">private</strong> PlantUmlService service;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>      @Value(<span class="jxr_string">"${info.app.version}"</span>)
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">private</strong> String appVersion;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>      @Autowired
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> MockMvc mvc;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      @Test
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> generate_image() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          String url = <span class="jxr_string">"http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000"</span>;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <em class="jxr_comment">// モックを設定</em>
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>          String expectedUmlPath = <span class="jxr_string">"/service/PlantUmlServiceTest/simple_uml.png"</span>;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>          byte[] expectedUmlData = IOUtils.toByteArray(<strong class="jxr_keyword">this</strong>.getClass().getResourceAsStream(expectedUmlPath));
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>          given(<strong class="jxr_keyword">this</strong>.service.generate(url)).willReturn(expectedUmlData);
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          <em class="jxr_comment">// テストを実行</em>
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          ResultActions result = <strong class="jxr_keyword">this</strong>.mvc.perform(get(<span class="jxr_string">"/image.png"</span>).param(<span class="jxr_string">"url"</span>, url));
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>          <em class="jxr_comment">// テスト結果を確認</em>
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>          result.andExpect(status().isOk())
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>              .andExpect(header().string(<span class="jxr_string">"X-Api-Version"</span>, <strong class="jxr_keyword">this</strong>.appVersion))
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>              .andExpect(header().string(<span class="jxr_string">"Content-Type"</span>, <span class="jxr_string">"image/png"</span>))
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>              .andExpect(content().bytes(expectedUmlData));
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      }
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      @Test
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> service_<strong class="jxr_keyword">throw</strong>_illegalArgumentException() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <em class="jxr_comment">// モックを設定</em>
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          given(<strong class="jxr_keyword">this</strong>.service.generate(<span class="jxr_string">""</span>))
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>              .willThrow(<strong class="jxr_keyword">new</strong> IllegalArgumentException(<span class="jxr_string">"url is blank."</span>));
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> net.sourceforge.plantuml.FileFormat;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.io.IOUtils;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> org.junit.runner.RunWith;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.annotation.Autowired;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.annotation.Value;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> org.springframework.boot.test.mock.mockito.MockBean;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> org.springframework.test.context.junit4.SpringRunner;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> org.springframework.test.web.servlet.MockMvc;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> org.springframework.test.web.servlet.ResultActions;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  @RunWith(SpringRunner.<strong class="jxr_keyword">class</strong>)
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  @WebMvcTest
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../me/u6k/plantuml_image_generator/controller/ImageRestControllerTest.html">ImageRestControllerTest</a> {
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>      @Value(<span class="jxr_string">"${info.app.version}"</span>)
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>      <strong class="jxr_keyword">private</strong> String appVersion;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      @Autowired
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> MockMvc mvc;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      @MockBean
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> PlantUmlService service;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      @Test
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> 画像を生成() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <em class="jxr_comment">// モックを設定</em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          String url = <span class="jxr_string">"http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000"</span>;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>          byte[] expectedContent = IOUtils.toByteArray(<strong class="jxr_keyword">this</strong>.getClass().getResourceAsStream(<span class="jxr_string">"/service/PlantUmlServiceTest/simple_uml.png"</span>));
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>          given(<strong class="jxr_keyword">this</strong>.service.generate(url, FileFormat.PNG)).willReturn(expectedContent);
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          <em class="jxr_comment">// テストを実行</em>
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>          ResultActions result = <strong class="jxr_keyword">this</strong>.mvc.perform(get(<span class="jxr_string">"/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000"</span>));
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>          <em class="jxr_comment">// テスト結果を確認</em>
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          result.andExpect(status().isOk())
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>              .andExpect(header().string(<span class="jxr_string">"X-Api-Version"</span>, <strong class="jxr_keyword">this</strong>.appVersion))
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>              .andExpect(header().string(<span class="jxr_string">"Content-Type"</span>, <span class="jxr_string">"image/png"</span>))
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>              .andExpect(content().bytes(expectedContent));
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      }
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>      @Test
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> 画像を生成_png() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <em class="jxr_comment">// モックを設定</em>
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          String url = <span class="jxr_string">"http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000"</span>;
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          byte[] expectedContent = IOUtils.toByteArray(<strong class="jxr_keyword">this</strong>.getClass().getResourceAsStream(<span class="jxr_string">"/service/PlantUmlServiceTest/simple_uml.png"</span>));
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          given(<strong class="jxr_keyword">this</strong>.service.generate(url, FileFormat.PNG)).willReturn(expectedContent);
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>  
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          <em class="jxr_comment">// テストを実行</em>
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          ResultActions result = <strong class="jxr_keyword">this</strong>.mvc.perform(get(<span class="jxr_string">"/image.png"</span>).param(<span class="jxr_string">"url"</span>, <span class="jxr_string">""</span>));
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          ResultActions result = <strong class="jxr_keyword">this</strong>.mvc.perform(get(<span class="jxr_string">"/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000&amp;format=png"</span>));
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          <em class="jxr_comment">// テスト結果を確認</em>
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          result.andExpect(status().isBadRequest())
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          result.andExpect(status().isOk())
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>              .andExpect(header().string(<span class="jxr_string">"X-Api-Version"</span>, <strong class="jxr_keyword">this</strong>.appVersion))
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>              .andExpect(header().string(<span class="jxr_string">"Content-Type"</span>, <span class="jxr_string">"application/json"</span>))
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>              .andExpect(content().string(<span class="jxr_string">"{\&quot;code\&quot;:\&quot;java.lang.IllegalArgumentException\&quot;,\&quot;message\&quot;:\&quot;url is blank.\&quot;}"</span>));
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>              .andExpect(header().string(<span class="jxr_string">"Content-Type"</span>, <span class="jxr_string">"image/png"</span>))
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>              .andExpect(content().bytes(expectedContent));
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      }
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      @Test
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> service_<strong class="jxr_keyword">throw</strong>_readWebResourceException() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          String url = <span class="jxr_string">"http://httpbin.org/delay/20"</span>;
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>  
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <em class="jxr_comment">// モックを設定</em>
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          given(<strong class="jxr_keyword">this</strong>.service.generate(url))
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>              .willThrow(<strong class="jxr_keyword">new</strong> ReadWebResourceException(<span class="jxr_string">"timeout"</span>)); <em class="jxr_comment">// FIXME</em>
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>  
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <em class="jxr_comment">// テストを実行</em>
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          ResultActions result = <strong class="jxr_keyword">this</strong>.mvc.perform(get(<span class="jxr_string">"/image.png"</span>).param(<span class="jxr_string">"url"</span>, url));
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>  
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <em class="jxr_comment">// テスト結果を確認</em>
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>          result.andExpect(status().isInternalServerError())
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>              .andExpect(header().string(<span class="jxr_string">"X-Api-Version"</span>, <strong class="jxr_keyword">this</strong>.appVersion))
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>              .andExpect(header().string(<span class="jxr_string">"Content-Type"</span>, <span class="jxr_string">"application/json"</span>))
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>              .andExpect(content().string(<span class="jxr_string">"{\&quot;code\&quot;:\&quot;me.u6k.plantuml_image_generator.exception.ReadWebResourceException\&quot;,\&quot;message\&quot;:\&quot;timeout\&quot;}"</span>));
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>      }
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>  
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>  }
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> 画像を生成_svg() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          <em class="jxr_comment">// モックを設定</em>
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          String url = <span class="jxr_string">"http://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000"</span>;
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          byte[] expectedContent = IOUtils.toByteArray(<strong class="jxr_keyword">this</strong>.getClass().getResourceAsStream(<span class="jxr_string">"/service/PlantUmlServiceTest/simple_uml.svg"</span>));
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          given(<strong class="jxr_keyword">this</strong>.service.generate(url, FileFormat.SVG)).willReturn(expectedContent);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>  
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <em class="jxr_comment">// テストを実行</em>
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          ResultActions result = <strong class="jxr_keyword">this</strong>.mvc.perform(get(<span class="jxr_string">"/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000&amp;format=svg"</span>));
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>  
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          <em class="jxr_comment">// テスト結果を確認</em>
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          result.andExpect(status().isOk())
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>              .andExpect(header().string(<span class="jxr_string">"X-Api-Version"</span>, <strong class="jxr_keyword">this</strong>.appVersion))
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>              .andExpect(header().string(<span class="jxr_string">"Content-Type"</span>, <span class="jxr_string">"image/svg+xml"</span>))
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>              .andExpect(content().bytes(expectedContent));
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>      }
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>  
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>      @Test
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> 不正な引数_urlが空文字列() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          <em class="jxr_comment">// テストを実行</em>
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          ResultActions result = <strong class="jxr_keyword">this</strong>.mvc.perform(get(<span class="jxr_string">"/images?url="</span>));
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>  
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          <em class="jxr_comment">// テスト結果を確認</em>
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>          result.andExpect(status().isBadRequest())
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>              .andExpect(header().string(<span class="jxr_string">"X-Api-Version"</span>, <strong class="jxr_keyword">this</strong>.appVersion))
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>              .andExpect(header().string(<span class="jxr_string">"Content-Type"</span>, <span class="jxr_string">"application/json"</span>))
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>              .andExpect(content().string(<span class="jxr_string">"{\&quot;code\&quot;:\&quot;java.lang.IllegalArgumentException\&quot;,\&quot;message\&quot;:\&quot;encodedUrl is blank.\&quot;}"</span>));
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>      }
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>  
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>      @Test
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> 不正な引数_formatに存在しないフォーマット() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>         <em class="jxr_comment">// テストを実行</em>
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         ResultActions result = <strong class="jxr_keyword">this</strong>.mvc.perform(get(<span class="jxr_string">"/images?url=http%3a%2f%2fwww%2eplantuml%2ecom%2fplantuml%2fuml%2fSyfFKj2rKt3CoKnELR1Io4ZDoSa70000&amp;format=a"</span>));
+<a class="jxr_linenumber" name="L102" href="#L102">102</a> 
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <em class="jxr_comment">// テスト結果を確認</em>
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>         result.andExpect(status().isBadRequest())
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>             .andExpect(header().string(<span class="jxr_string">"X-Api-Version"</span>, <strong class="jxr_keyword">this</strong>.appVersion))
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>             .andExpect(header().string(<span class="jxr_string">"Content-Type"</span>, <span class="jxr_string">"application/json"</span>))
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>             .andExpect(content().string(<span class="jxr_string">"{\&quot;code\&quot;:\&quot;java.lang.IllegalArgumentException\&quot;,\&quot;message\&quot;:\&quot;&#92;&#92;\&quot;a&#92;&#92;\&quot; is unknown format.\&quot;}"</span>));
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>     }
+<a class="jxr_linenumber" name="L109" href="#L109">109</a> 
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>     @Test
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> タイムアウト() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <em class="jxr_comment">// モックを設定</em>
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         given(<strong class="jxr_keyword">this</strong>.service.generate(<span class="jxr_string">"http://httpbin.org/delay/20"</span>, FileFormat.PNG)).willThrow(<strong class="jxr_keyword">new</strong> ReadWebResourceException(<span class="jxr_string">"java.net.SocketTimeoutException: Read timed out"</span>));
+<a class="jxr_linenumber" name="L114" href="#L114">114</a> 
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         <em class="jxr_comment">// テストを実行</em>
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>         ResultActions result = <strong class="jxr_keyword">this</strong>.mvc.perform(get(<span class="jxr_string">"/images?url=http%3a%2f%2fhttpbin%2eorg%2fdelay%2f20"</span>));
+<a class="jxr_linenumber" name="L117" href="#L117">117</a> 
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>         <em class="jxr_comment">// テスト結果を確認</em>
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>         result.andExpect(status().isInternalServerError())
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>             .andExpect(header().string(<span class="jxr_string">"X-Api-Version"</span>, <strong class="jxr_keyword">this</strong>.appVersion))
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>             .andExpect(header().string(<span class="jxr_string">"Content-Type"</span>, <span class="jxr_string">"application/json"</span>))
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>             .andExpect(content().string(<span class="jxr_string">"{\&quot;code\&quot;:\&quot;me.u6k.plantuml_image_generator.exception.ReadWebResourceException\&quot;,\&quot;message\&quot;:\&quot;java.net.SocketTimeoutException: Read timed out\&quot;}"</span>));
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>     }
+<a class="jxr_linenumber" name="L124" href="#L124">124</a> 
+<a class="jxr_linenumber" name="L125" href="#L125">125</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2017 <a href="https://github.com/u6k">u6k Apps</a>. All rights reserved.</div>

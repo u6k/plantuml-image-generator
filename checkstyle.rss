@@ -26,7 +26,7 @@ under the License.
     <copyright>&#169;2017 u6k Apps</copyright>
     <item>
       <title>File: 8,
-             Errors: 72,
+             Errors: 83,
              Warnings: 0,
              Infos: 0
       </title>
@@ -111,7 +111,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  8
+                  10
                 </td>
               </tr>
                           <tr>
@@ -125,7 +125,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  14
+                  16
                 </td>
               </tr>
                           <tr>
@@ -153,7 +153,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  11
+                  18
                 </td>
               </tr>
                       </tbody>

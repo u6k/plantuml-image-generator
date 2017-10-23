@@ -1,0 +1,63 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "plantuml-image-generator WebAPI Specification",
+    "contact" : {
+      "name" : "u6k Apps",
+      "url" : "https://github.com/u6k/plantuml-image-generator",
+      "email" : "u6k.apps@gmail.com"
+    },
+    "license" : {
+      "name" : "GNU General Public License v3.0",
+      "url" : "https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE"
+    }
+  },
+  "host" : "plantuml-image-generator.u6k.me",
+  "basePath" : "/",
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/images" : {
+      "get" : {
+        "summary" : "Generate PlantUML Image(png or svg)",
+        "description" : "",
+        "operationId" : "generateImage",
+        "schemes" : [ "https" ],
+        "parameters" : [ {
+          "name" : "url",
+          "in" : "query",
+          "description" : "PlantUML文書が存在するURL。URLエンコードしてください。",
+          "required" : true,
+          "type" : "http%3A%2F%2Fwww.plantuml.com%2Fplantuml%2Fuml%2FSyfFKj2rKt3CoKnELR1Io4ZDoSa70000",
+          "x-example" : "http%3A%2F%2Fwww.plantuml.com%2Fplantuml%2Fuml%2FSyfFKj2rKt3CoKnELR1Io4ZDoSa70000"
+        }, {
+          "name" : "format",
+          "in" : "query",
+          "description" : "画像形式。\"png\"または\"svg\"。",
+          "required" : false,
+          "type" : "svg",
+          "default" : "png",
+          "x-example" : "svg"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "string",
+                "format" : "byte"
+              }
+            }
+          },
+          "400" : {
+            "description" : "パラメータが不正な場合"
+          },
+          "500" : {
+            "description" : "PlantUML文書の取得に失敗した場合"
+          }
+        }
+      }
+    }
+  }
+}

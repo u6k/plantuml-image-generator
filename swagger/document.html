@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<title>API Document</title>
+
+<xmp theme="united" style="display:none;">
+#plantuml-image-generator WebAPI Specification
+
+
+## HTTPS://plantuml-image-generator.u6k.me/
+
+
+
+
+
+[**Contact the developer**](mailto:u6k.apps@gmail.com)
+
+
+**Version** 1.0.0
+
+[**Terms of Service**]()
+
+[**GNU General Public License v3.0**](https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE)
+
+
+
+
+
+
+
+
+
+
+# APIs
+
+
+## /images
+
+
+### GET
+
+<a id="generateImage">Generate PlantUML Image(png or svg)</a>
+
+
+
+
+
+
+
+
+
+#### Request
+
+
+
+##### Parameters
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Located in</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Default</th>
+        <th>Example</th>
+    </tr>
+
+
+
+<tr>
+    <th>url</th>
+    <td>query</td>
+    <td>yes</td>
+    <td>PlantUML文書が存在するURL。URLエンコードしてください。</td>
+    <td> - </td>
+
+    
+            <td>http%3A%2F%2Fwww.plantuml.com%2Fplantuml%2Fuml%2FSyfFKj2rKt3CoKnELR1Io4ZDoSa70000 </td>
+    
+
+</tr>
+
+<tr>
+    <th>format</th>
+    <td>query</td>
+    <td>no</td>
+    <td>画像形式。&quot;png&quot;または&quot;svg&quot;。</td>
+    <td> - </td>
+
+    
+            <td>svg </td>
+    
+
+</tr>
+
+
+</table>
+
+
+
+#### Response
+
+
+
+
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+| 200    | successful operation | Array[<a href=""></a>]|
+| 400    | パラメータが不正な場合 |  - |
+| 500    | PlantUML文書の取得に失敗した場合 |  - |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Definitions
+
+
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>
