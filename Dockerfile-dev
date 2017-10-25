@@ -3,7 +3,9 @@ FROM openjdk:8-alpine AS dev
 # Install japanese font
 RUN apk update && \
     apk upgrade && \
-    apk --no-cache add fontconfig && \
+    apk --no-cache add \
+        fontconfig \
+        graphviz && \
     mkdir -p ~/.fonts && \
     cd ~/.fonts && \
     wget -O ipagp00303.zip http://ipafont.ipa.go.jp/old/ipafont/ipagp00303.php && \
