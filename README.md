@@ -102,12 +102,6 @@ Eclipseプロジェクトを作成:
 $ ./mvnw eclipse:eclipse
 ```
 
-ローカルで動作確認:
-
-```
-$ ./mvnw spring-boot:run
-```
-
 開発用Dockerイメージをビルド:
 
 ```
@@ -123,6 +117,18 @@ $ docker run \
     -v ${PWD}:/var/plantuml-image-generator \
     plantuml-image-generator-dev \
         ./mvnw clean surefire-report:report
+```
+
+動作確認
+
+```
+$ docker run \
+    --rm \
+    -v ${HOME}/.m2:/root/.m2 \
+    -v ${PWD}:/var/plantuml-image-generator \
+    -p 8080:8080 \
+    plantuml-image-generator-dev \
+        ./mvnw clean spring-boot:run
 ```
 
 E2Eテスト:
