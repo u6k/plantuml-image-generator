@@ -1,7 +1,7 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "version" : "1.0.0",
+    "version" : "1.1.0-SNAPSHOT",
     "title" : "plantuml-image-generator WebAPI Specification",
     "contact" : {
       "name" : "u6k Apps",
@@ -26,14 +26,14 @@
         "parameters" : [ {
           "name" : "url",
           "in" : "query",
-          "description" : "PlantUML•¶‘‚ª‘¶İ‚·‚éURLBURLƒGƒ“ƒR[ƒh‚µ‚Ä‚­‚¾‚³‚¢B",
+          "description" : "PlantUMLæ–‡æ›¸ãŒå­˜åœ¨ã™ã‚‹URLã€‚URLã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã—ã¦ãã ã•ã„ã€‚",
           "required" : true,
           "type" : "http%3A%2F%2Fwww.plantuml.com%2Fplantuml%2Fuml%2FSyfFKj2rKt3CoKnELR1Io4ZDoSa70000",
           "x-example" : "http%3A%2F%2Fwww.plantuml.com%2Fplantuml%2Fuml%2FSyfFKj2rKt3CoKnELR1Io4ZDoSa70000"
         }, {
           "name" : "format",
           "in" : "query",
-          "description" : "‰æ‘œŒ`®B\"png\"‚Ü‚½‚Í\"svg\"B",
+          "description" : "ç”»åƒå½¢å¼ã€‚\"png\"ã¾ãŸã¯\"svg\"ã€‚",
           "required" : false,
           "type" : "svg",
           "default" : "png",
@@ -51,10 +51,10 @@
             }
           },
           "400" : {
-            "description" : "ƒpƒ‰ƒ[ƒ^‚ª•s³‚Èê‡"
+            "description" : "ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ãªå ´åˆ"
           },
           "500" : {
-            "description" : "PlantUML•¶‘‚Ìæ“¾‚É¸”s‚µ‚½ê‡"
+            "description" : "PlantUMLæ–‡æ›¸ã®å–å¾—ã«å¤±æ•—ã—ãŸå ´åˆ"
           }
         }
       }
