@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.1](https://github.com/u6k/plantuml-image-generator/releases/tag/1.0.1) - 2017-10-25
+
+### Fixed
+
+- [バグ #5831: 画像の生成に失敗する - u6k.Redmine](https://redmine.u6k.me/issues/5831)
+
 ## [1.0.0](https://github.com/u6k/plantuml-image-generator/releases/tag/1.0.0) - 2017-10-23
 
 ### Added
@@ -12,6 +18,9 @@
 
 - [機能 #5787: プロジェクト構造をSpring Boot with Maven and Travis CIに合わせます - u6k.Redmine](https://redmine.u6k.me/issues/5787)
 - [機能 #5788: テストを強化します - u6k.Redmine](https://redmine.u6k.me/issues/5788)
+
+### Fixed
+
 - [バグ #5790: java.lang.UnsatisfiedLinkError: /usr/lib/jvm/java-1.8-openjdk/jre/lib/amd64/libfontmanager.so: Error relocating /usr/lib/jvm/java-1.8-openjdk/jre/lib/amd64/libfontmanager.so: AWTFontDefaultChar: symbol not found - u6k.Redmine](https://redmine.u6k.me/issues/5790)
 
 ## [0.2.0](https://github.com/u6k/plantuml-image-generator/releases/tag/0.2.0) - 2017-10-17
