@@ -149,6 +149,39 @@ $ docker run \
     plantuml-image-generator
 ```
 
+E2Eテスト:
+
+```
+# バージョン情報を表示
+curl -v http://localhost:8080/info
+
+# Gistにある各図をpng生成してみる
+curl -v -o activity1.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Factivity1.pu'
+curl -v -o activity2.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Factivity2.pu'
+curl -v -o class.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fclass.pu'
+curl -v -o component.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fcomponent.pu'
+curl -v -o deployment.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fdeployment.pu'
+curl -v -o object.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fobject.pu'
+curl -v -o sequence.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fsequence.pu'
+curl -v -o state.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fstate.pu'
+curl -v -o test.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Ftest.pu'
+curl -v -o timing.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Ftiming.pu'
+curl -v -o usecase.png 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fusecase.pu'
+
+# Gistにある各図をsvg生成してみる
+curl -v -o activity1.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Factivity1.pu&format=svg'
+curl -v -o activity2.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Factivity2.pu&format=svg'
+curl -v -o class.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fclass.pu&format=svg'
+curl -v -o component.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fcomponent.pu&format=svg'
+curl -v -o deployment.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fdeployment.pu&format=svg'
+curl -v -o object.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fobject.pu&format=svg'
+curl -v -o sequence.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fsequence.pu&format=svg'
+curl -v -o state.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fstate.pu&format=svg'
+curl -v -o test.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Ftest.pu&format=svg'
+curl -v -o timing.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Ftiming.pu&format=svg'
+curl -v -o usecase.svg 'http://localhost:8080/images?url=https%3A%2F%2Fgist.github.com%2Fu6k%2F4208e71ad62d3b972c357c77783cb95d%2Fraw%2F01c544cab40009c723d57be3d892092ef35fac6e%2Fusecase.pu&format=svg'
+```
+
 ## License
 
 [GPL v3 &copy; 2017 u6k.apps@gmail.com](https://github.com/u6k/plantuml-image-generator/blob/master/LICENSE)
